@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage[top=1in, bottom=1in, left=1.25in, right=1in]{geometry}
+\usepackage{float}
 
 \hypersetup{
     colorlinks, %set true if you want colored links
@@ -110,14 +111,26 @@
 	connected to the camera and will stream the video feed to the centralized
 	server.
 
-	The system design is shown in Figure \ref{fig:uml}. The UML diagram outlines the
-	components necessary for implementation and the relationships between them.
+	The system design is shown in Figure \ref{fig:uml}. The UML diagram
+	outlines the components necessary for implementation and the
+	relationships between them. The wiring diagram for the system is shown in
+	Figure \ref{fig:wiring}. In the diagram, the Arduino is connected to two
+	LEDs that will act as the headlights, a light dependent resistor (LDR) to
+	sense the brightness of the area, and an H-bridge motor driver and two
+	motors to control the driving.
 
-	\begin{figure}[h]
+	\begin{figure}[H]
     	\centering
 		\includegraphics[width=\linewidth]{Proposal_UML_Diagram.png}
-    	\caption{UML Diagram for RC Camera Car System}
+    	\caption{UML diagram for RC Camera Car system}
     	\label{fig:uml}
+	\end{figure}
+
+	\begin{figure}[H]
+    	\centering
+		\includegraphics[width=\linewidth]{Proposal_Wiring_Diagram.png}
+    	\caption{Wiring diagram for Arduino of RC Camera Car system}
+    	\label{fig:wiring}
 	\end{figure}
 
 	\section*{Project Plan}
