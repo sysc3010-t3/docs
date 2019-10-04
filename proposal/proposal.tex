@@ -5,6 +5,9 @@
 \usepackage[top=1in, bottom=1in, left=1.25in, right=1in]{geometry}
 \usepackage{float}
 
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+
 \hypersetup{
     colorlinks, %set true if you want colored links
     linkcolor=black,  %choose some color if you want links to stand out
@@ -18,11 +21,10 @@
 
 	\begin{abstract}
 		The students developing this project are Alec D'Alessandro, Thao-Tran
-		Le-Phuong, Honor Lopes, and Igor Veselinovic. This document will
-		outline the motivations, goals, and the proposed solution for the
-		project, as well as the motivations for pursuing this project. The
-		proposal will also provide the projected plan and milestones for the
-		project.
+		Le-Phuong, Honor Lopes, and Igor Veselinovic. This document will outline
+		the motivations, goals, and the proposed solution for the project, as
+		well as the motivations for pursuing this project. The proposal will
+		also provide the projected plan and milestones for the project.
 	\end{abstract}
 
 	\tableofcontents
@@ -34,11 +36,11 @@
 	\addcontentsline{toc}{section}{Motivation}
 	The purpose of this project is to create a remote-controlled vehicle in
 	order to explore uninhabited or unreachable locations. There are many
-	locations inaccessible or unsafe for manned vehicles such as warzones,
-	cave systems, and biohazard spaces. These are locations where it would be
-	unsafe to send human drives and would be preferable to have the vehicle
-	operated remotely. This project would allow us to explore potentially
-	dangerous regions without risk to human safety.
+	locations inaccessible or unsafe for manned vehicles such as warzones, cave
+	systems, and biohazard spaces. These are locations where it would be unsafe
+	to send human drives and would be preferable to have the vehicle operated
+	remotely. This project would allow us to explore potentially dangerous
+	regions without risk to human safety.
 
 	The planned vehicle will have a camera attached in order for it to obtain
 	video of the vehicles surroundings. This allows the user to obtain data on
@@ -47,17 +49,15 @@
 	be operated at night and in low light conditions. This project has science,
 	military and recreational applications.
 
-	\section*{Goals/Scope}
+	\section*{Problem Statement}
 	\markright{}
-	\addcontentsline{toc}{section}{Goals/Scope}
-	The first goal for this project is for the car to be controlled via
+	\addcontentsline{toc}{section}{Problem Statement}
+	The overall goal for this project is for the car to be controlled via
 	smart-phone through our designed android application. Once the user has
-	opened the application there will be a live feed video source that is being
-	transmitted from the car. This will allow the user to view from the
-	perspective of sitting on top of the car. The car could then be outfitted
-	with additional auxiliaries needed for specific jobs. Examples of this
-	include a shovel to take samples of soil or an arm to pick up and move
-	target objects.
+	registered with the car through the application there will be a live feed
+	video source that is being transmitted from the car. The car could then be
+	outfitted with additional auxiliaries needed for specific jobs. The car will
+	also have automatic headlights to provide light in dimly lit areas.
 
 	One limitation to the project development is how much bandwidth can be used
 	for the live video feed stream from the car to the android application. A
@@ -68,56 +68,9 @@
 	longevity of the project permitted more components would be added to ensure
 	the car would give benefit to various jobs and a wide variety of terrains.
 
-	\section*{Objectives}
-	\markright{}
-	\addcontentsline{toc}{section}{Objectives}
-	\begin{itemize}
-		\item Remote controlled vehicle
-		\item Video feed from camera on vehicle
-		\item Automatic headlights
-		\item Brightness sensors
-		\item Video feed displayed on android app
-		\item Vehicle controls on android app
-		\item Accounts and user authentication
-	\end{itemize}
-
 	\section*{Proposed Solution}
 	\markright{}
 	\addcontentsline{toc}{section}{Proposed Solution}
-	Users will use the Android app to register their car to themselves and
-	connect it to a Wi-Fi network. After the car is connected to Wi-Fi, users
-	can control the car’s movements via the app as well as stream a video feed
-	from and control the mounted camera. The video feed is to allow the user to
-	control the car when it is not in sight. The app will also allow users to
-	control the headlights of the car in case of dimly lit settings.
-
-	There will be a Raspberry Pi that acts as the centralized server. The
-	server will have a database that will store the users, cars, and the
-	pairings of users to cars. It will handle all of the commands coming from
-	users and route them to their associated cars. Video feed from each car
-	will be sent to the server to be sent to the proper user and can optionally
-	be stored on a hard drive at the user’s request.
-
-	The body of the car will contain an Arduino and a Raspberry Pi. The Arduino
-	will control the movement of the car (steering, acceleration) and handle
-	the headlights of the car (LDR sensor and LEDs). The LDR sensor will be
-	used to detect when an area is dimly lit and the Arduino will automatically
-	turn on the headlights (LEDs). The car movement will require motors to be
-	connected to the Arduino and possibly a custom 3D printed chassis to hold
-	all of the components. The car will use continuous tracks for propulsion as
-	they will allow the car to traverse more types of terrain. The Raspberry Pi
-	will be connected to a Wi-Fi network to receive user commands and relay
-	them to the Arduino via a wired connection. The Raspberry Pi will also be
-	connected to the camera and will stream the video feed to the centralized
-	server.
-
-	The system design is shown in Figure \ref{fig:uml}. The UML diagram
-	outlines the components necessary for implementation and the
-	relationships between them. The wiring diagram for the system is shown in
-	Figure \ref{fig:wiring}. In the diagram, the Arduino is connected to two
-	LEDs that will act as the headlights, a light dependent resistor (LDR) to
-	sense the brightness of the area, and an H-bridge motor driver and two
-	motors to control the driving.
 
 	\begin{figure}[H]
     	\centering
@@ -126,12 +79,48 @@
     	\label{fig:uml}
 	\end{figure}
 
+	The system design is shown in Figure \ref{fig:uml}. The UML diagram outlines
+	the components necessary for implementation and the relationships between
+	them. 
+
+	Users will use the Android app to register their car to themselves and
+	connect it to a Wi-Fi network. After the car is connected to Wi-Fi, users
+	can control the car’s movements via the app as well as stream a video feed
+	from and control the mounted camera. The video feed is to allow the user to
+	control the car when it is not in sight. The app will also allow users to
+	control the headlights of the car in case of dimly lit settings.
+
+	There will be a Raspberry Pi that acts as the centralized server. The server
+	will have a database that will store the users, cars, and the pairings of
+	users to cars. It will handle all of the commands coming from users and
+	route them to their associated cars. Video feed from each car will be sent
+	to the server to be sent to the proper user and can optionally be stored on
+	a hard drive at the user’s request.
+
+	The body of the car will contain an Arduino and a Raspberry Pi. The Arduino
+	will control the movement of the car (steering, acceleration) and handle the
+	headlights of the car (photoresistor sensor and LEDs). The photoresistor
+	sensor will be used to detect when an area is dimly lit and the Arduino will
+	automatically turn on the headlights (LEDs). The car movement will require
+	motors to be connected to the Arduino and possibly a custom 3D printed
+	chassis to hold all of the components. The car will use continuous tracks
+	for propulsion as they will allow the car to traverse more types of terrain.
+	The Raspberry Pi will be connected to a Wi-Fi network to receive user
+	commands and relay them to the Arduino via a wired connection. The Raspberry
+	Pi will also be connected to the camera and will stream the video feed to
+	the centralized server.
+
 	\begin{figure}[H]
     	\centering
 		\includegraphics[width=\linewidth]{Proposal_Wiring_Diagram.png}
     	\caption{Wiring diagram for Arduino of RC Camera Car system}
     	\label{fig:wiring}
 	\end{figure}
+
+	The wiring diagram for the system is shown in Figure \ref{fig:wiring}. In
+	the diagram, the Arduino is connected to two LEDs that will act as the
+	headlights, a photoresistor to sense the brightness of the area, and an
+	H-bridge motor driver and two motors to control the driving.
 
 	\section*{Project Plan}
 	\markright{}
@@ -142,18 +131,20 @@
 	headlights) make up one grouping of work. All handling of video, including
 	interfacing with the camera, streaming, and long-term storage, is another
 	main thread of work. The last central component to this system is the
-	Android application which must have a GUI and needs to be tested
-	differently since it is user-facing. Testing is a vital component of each
-	stream of work and will be done throughout the development process of all
-	software.
+	Android application which must have a GUI and needs to be tested differently
+	since it is user-facing. Testing is a vital component of each stream of work
+	and will be done throughout the development process of all software.
 
 	There are obvious interdependencies between section of work such as the
 	Android application needing to receive video from the Raspberry Pi server
-	and the Android application sending movement commands to the car. Even
-	after testing components independently, new bugs and issues might arise
-	once separate components are integrated together. Thus, beyond the unit
-	testing of individual components, integration testing will need to be done
-	at every stage of the system’s development.
+	and the Android application sending movement commands to the car. Even after
+	testing components independently, new bugs and issues might arise once
+	separate components are integrated together. Thus, beyond the unit testing
+	of individual components, integration testing will need to be done at every
+	stage of the system’s development.
+
+	\setlength{\parskip}{0em}
+	\renewcommand{\baselinestretch}{0}
 
 	\subsection*{Milestones}
 	\markright{}
@@ -167,33 +158,53 @@
 	\end{itemize}
 	\noindent\rule{\textwidth}{0.5pt}
 	\begin{itemize}
-		\item \textbf{[CAR]} Acquire/build all components for the system (camera, tracks/wheels, chassis, motor, etc.)
-		\item \textbf{[CAR]} Develop a codebase for controlling the car’s wheels/tracks using motors to allow for forward/backward movement and turning
-		\item \textbf{[CAR, TST]} Develop a comprehensive unit test suite of the car movement control code
-		\item \textbf{[CAR, TST]} Manually test and fine-tune the car movement control code
+		\item \textbf{[CAR]} Acquire/build all components for the system
+			(camera, tracks/wheels, chassis, motor, etc.)
+		\item \textbf{[CAR]} Develop a codebase for controlling the car’s
+			wheels/tracks using motors to allow for forward/backward movement
+			and turning
+		\item \textbf{[CAR, TST]} Develop a comprehensive unit test suite of the
+			car movement control code
+		\item \textbf{[CAR, TST]} Manually test and fine-tune the car movement
+			control code
 	\end{itemize}
 	\noindent\rule{\textwidth}{0.5pt}
 	\begin{itemize}
-		\item \textbf{[CAR]} Set up periodic checks of environment light levels using the light sensor and adjust the brightness of the headlights accordingly
-		\item \textbf{[CAR, TST]} Develop a comprehensive unit test suite of the light control code
+		\item \textbf{[CAR]} Set up periodic checks of environment light levels
+			using the light sensor and adjust the brightness of the headlights
+			accordingly
+		\item \textbf{[CAR, TST]} Develop a comprehensive unit test suite of the
+			light control code
 	\end{itemize}
 	\noindent\rule{\textwidth}{0.5pt}
 	\begin{itemize}
-		\item \textbf{[CAR]} Send movement commands from centralized Raspberry Pi server to the car’s Raspberry Pi, relay them to the Arduino, and power the corresponding motor(s)
-		\item \textbf{[CAR, TST]} Develop a comprehensive unit test suite of the networking code
+		\item \textbf{[CAR]} Send movement commands from centralized Raspberry
+			Pi server to the car’s Raspberry Pi, relay them to the Arduino, and
+			power the corresponding motor(s)
+		\item \textbf{[CAR, TST]} Develop a comprehensive unit test suite of the
+			networking code
 	\end{itemize}
 	\noindent\rule{\textwidth}{0.5pt}
 	\begin{itemize}
-		\item \textbf{[VID]} Send video data from the car’s Raspberry Pi to the centralized Raspberry Pi and relay the stream to clients
-		\item \textbf{[VID]} Store video clips on an external hard drive and track the files using an SQL database
-		\item \textbf{[VID, TST]} Develop a comprehensive functional test suite of the video streaming and storage code
+		\item \textbf{[VID]} Send video data from the car’s Raspberry Pi to the
+			centralized Raspberry Pi and relay the stream to clients
+		\item \textbf{[VID]} Store video clips on an external hard drive and
+			track the files using an SQL database
+		\item \textbf{[VID, TST]} Develop a comprehensive functional test suite
+			of the video streaming and storage code
 	\end{itemize}
 	\noindent\rule{\textwidth}{0.5pt}
 	\begin{itemize}
-		\item \textbf{[AND, CAR]} Send commands to the centralized Raspberry Pi server based on inputs to the Android application GUI that will then be relayed to the car
-		\item \textbf{[AND, VID]} Receive and play video streams and recorded clips from the centralized Raspberry Pi server in the Android application GUI
-		\item \textbf{[AND, TST]} Develop a sanity test suite of the GUI of the Android application
-		\item \textbf{[AND, TST]} Develop a comprehensive unit test suite of the Android application code
+		\item \textbf{[AND, CAR]} Send commands to the centralized Raspberry Pi
+			server based on inputs to the Android application GUI that will then
+			be relayed to the car
+		\item \textbf{[AND, VID]} Receive and play video streams and recorded
+			clips from the centralized Raspberry Pi server in the Android
+			application GUI
+		\item \textbf{[AND, TST]} Develop a sanity test suite of the GUI of the
+			Android application
+		\item \textbf{[AND, TST]} Develop a comprehensive unit test suite of the
+			Android application code
 	\end{itemize}
 	\noindent\rule{\textwidth}{0.5pt}
 \end{document}
