@@ -21,7 +21,8 @@
 
 	\begin{abstract}
 		The students developing this project are Alec D'Alessandro, Thao-Tran
-		Le-Phuong, Honor Lopes, and Igor Veselinovic. This document will outline
+		Le-Phuong, Honor Lopes, and Igor Veselinovic and the student numbers are
+		101033378, 100997443, 101008909, 101011081. This document will outline
 		the motivations, goals, and the proposed solution for the project, as
 		well as the motivations for pursuing this project. The proposal will
 		also provide the projected plan and milestones for the project.
@@ -69,9 +70,8 @@
 	proposed solution to this would be to decrease video resolution for
 	bandwidth reducing purposes, which would lead to mal visibility. A
 	self-imposed constraint is on the complexity of the development of the car.
-	This project will be focused on the vehicle controls and video feed. If the
-	longevity of the project permitted more components would be added to ensure
-	the car would give benefit to various jobs and a wide variety of terrains.
+	This project will be focused on the vehicle controls and video feed. The car
+	will be limited to Wi-Fi-enabled areas with even ground for this project.
 
 	\section*{Proposed Solution}
 	\markright{}
@@ -95,12 +95,13 @@
 	control the car when it is not in sight. The app will also allow users to
 	control the headlights of the car in case of dimly lit settings.
 
-	There will be a Raspberry Pi that acts as the centralized server. The server
-	will have a database that will store the users, cars, and the pairings of
-	users to cars. It will handle all of the commands coming from users and
-	route them to their associated cars. Video feed from each car will be sent
-	to the server to be sent to the proper user and can optionally be stored on
-	a hard drive at the user’s request.
+	There will be a Raspberry Pi that is connected to the Internet via Ethernet
+	and acts as the centralized server. The server will have a database that
+	will store the users, cars, and the pairings of users to cars. It will
+	handle all of the commands coming from users and route them to their
+	associated cars. Video feed from each car will be sent to the server to be
+	sent to the proper user and can optionally be stored on a hard drive at the
+	user’s request.
 
 	The body of the car will contain an Arduino and a Raspberry Pi. The Arduino
 	will control the movement of the car (steering, acceleration) and handle the
@@ -150,6 +151,7 @@
 
 	\setlength{\parskip}{0em}
 	\renewcommand{\baselinestretch}{0}
+	\setlength{\baselineskip}{0.5em}
 
 	\subsection*{Milestones}
 	\markright{}
@@ -161,6 +163,15 @@
 		\item[] \textbf{AND}: Android application
 		\item[] \textbf{TST}: Testing
 	\end{itemize}
+	\noindent\rule[0.5em]{\textwidth}{0.5pt}
+	\textbf{Oct. 7 - Oct. 20}\\
+	\noindent\rule{\textwidth}{0.5pt}
+	\begin{itemize}
+		\item Explore and research possible implementations
+		\item Design car, server, and Android application systems
+	\end{itemize}
+	\noindent\rule[0.5em]{\textwidth}{0.5pt}
+	\textbf{Oct. 21 - Oct. 27}\\
 	\noindent\rule{\textwidth}{0.5pt}
 	\begin{itemize}
 		\item \textbf{[CAR]} Acquire/build all components for the system
@@ -173,6 +184,8 @@
 		\item \textbf{[CAR, TST]} Manually test and fine-tune the car movement
 			control code
 	\end{itemize}
+	\noindent\rule[0.5em]{\textwidth}{0.5pt}
+	\textbf{Oct. 28 - Nov. 3}\\
 	\noindent\rule{\textwidth}{0.5pt}
 	\begin{itemize}
 		\item \textbf{[CAR]} Set up periodic checks of environment light levels
@@ -181,6 +194,8 @@
 		\item \textbf{[CAR, TST]} Develop a comprehensive unit test suite of the
 			light control code
 	\end{itemize}
+	\noindent\rule[0.5em]{\textwidth}{0.5pt}
+	\textbf{Nov. 4 - Nov. 10}\\
 	\noindent\rule{\textwidth}{0.5pt}
 	\begin{itemize}
 		\item \textbf{[CAR]} Send movement commands from centralized Raspberry
@@ -189,6 +204,8 @@
 		\item \textbf{[CAR, TST]} Develop a comprehensive unit test suite of the
 			networking code
 	\end{itemize}
+	\noindent\rule[0.5em]{\textwidth}{0.5pt}
+	\textbf{Nov. 11 - Nov. 17}\\
 	\noindent\rule{\textwidth}{0.5pt}
 	\begin{itemize}
 		\item \textbf{[VID]} Send video data from the car’s Raspberry Pi to the
@@ -198,6 +215,8 @@
 		\item \textbf{[VID, TST]} Develop a comprehensive functional test suite
 			of the video streaming and storage code
 	\end{itemize}
+	\noindent\rule[0.5em]{\textwidth}{0.5pt}
+	\textbf{Nov. 18 - Nov. 24}\\
 	\noindent\rule{\textwidth}{0.5pt}
 	\begin{itemize}
 		\item \textbf{[AND, CAR]} Send commands to the centralized Raspberry Pi
@@ -211,5 +230,12 @@
 		\item \textbf{[AND, TST]} Develop a comprehensive unit test suite of the
 			Android application code
 	\end{itemize}
+	\noindent\rule[0.5em]{\textwidth}{0.5pt}
+	\textbf{Nov. 25 - Dec. 6}\\
 	\noindent\rule{\textwidth}{0.5pt}
+	\begin{itemize}
+		\item \textbf{[TST]} Verification and integration testing for entire
+			system
+		\item \textbf{[AND, VID, CAR]} Complete issue backlog
+	\end{itemize}
 \end{document}
