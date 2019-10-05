@@ -39,7 +39,7 @@
 	order to explore locations that cannot be seen by the user. There are many
 	locations inaccessible or unsafe for manned vehicles such as warzones, cave
 	systems, and biohazard spaces. These are locations where it would be unsafe
-	to send human drives and it would be preferable to send a remotely operated
+	to send human drivers and it would be preferable to send a remotely operated
 	vehicle. This project would allow users to explore regions and places that
 	are outside of their view.
 
@@ -59,19 +59,19 @@
 	\markright{}
 	\addcontentsline{toc}{section}{Problem Statement}
 	The overall goal for this project is for the car to be controlled via
-	smart-phone through our designed android application. Once the user has
+	smart-phone through our designed Android application. Once the user has
 	registered with the car through the application there will be a live feed
 	video source that is being transmitted from the car. The car could then be
 	outfitted with additional auxiliaries needed for specific jobs. The car will
 	also have automatic headlights to provide light in dimly lit areas.
 
 	One limitation to the project development is how much bandwidth can be used
-	for the live video feed stream from the car to the android application. A
+	for the live video feed stream from the car to the Android application. A
 	proposed solution to this would be to decrease video resolution for
-	bandwidth reducing purposes, which would lead to mal visibility. A
-	self-imposed constraint is on the complexity of the development of the car.
-	This project will be focused on the vehicle controls and video feed. The car
-	will be limited to Wi-Fi-enabled areas with even ground for this project.
+	bandwidth reducing purposes. A self-imposed constraint is on the complexity
+	of the development of the car. This project will be focused on the vehicle
+	controls and video feed. The car will be limited to Wi-Fi-enabled areas with
+	even ground for this project.
 
 	\section*{Proposed Solution}
 	\markright{}
@@ -79,7 +79,7 @@
 
 	\begin{figure}[H]
     	\centering
-		\includegraphics[width=\linewidth]{Proposal_UML_Diagram.png}
+		\includegraphics[width=\linewidth]{diagrams/Proposal_UML_Diagram.png}
     	\caption{UML diagram for RC Camera Car system}
     	\label{fig:uml}
 	\end{figure}
@@ -118,7 +118,7 @@
 
 	\begin{figure}[H]
     	\centering
-		\includegraphics[width=\linewidth]{Proposal_Car_Movement_Sequence.png}
+		\includegraphics[width=\linewidth]{diagrams/Proposal_Car_Movement_Sequence.png}
     	\caption{Sequence diagram of the user moving the car}
     	\label{fig:movement}
 	\end{figure}
@@ -134,7 +134,7 @@
 
 	\begin{figure}[H]
     	\centering
-		\includegraphics[width=0.75\linewidth]{Proposal_Automatic_Headlights_Sequence.png}
+		\includegraphics[width=0.75\linewidth]{diagrams/Proposal_Automatic_Headlights_Sequence.png}
     	\caption{Sequence diagram of the automatic headlights}
     	\label{fig:headlights}
 	\end{figure}
@@ -147,7 +147,7 @@
 
 	\begin{figure}[H]
     	\centering
-		\includegraphics[width=\linewidth]{Proposal_Wiring_Diagram.png}
+		\includegraphics[width=\linewidth]{diagrams/Proposal_Wiring_Diagram.png}
     	\caption{Wiring diagram for Arduino of RC Camera Car system}
     	\label{fig:wiring}
 	\end{figure}
@@ -170,7 +170,7 @@
 	since it is user-facing. Testing is a vital component of each stream of work
 	and will be done throughout the development process of all software.
 
-	There are obvious interdependencies between section of work such as the
+	There are obvious interdependencies between sections of work such as the
 	Android application needing to receive video from the Raspberry Pi server
 	and the Android application sending movement commands to the car. Even after
 	testing components independently, new bugs and issues might arise once
