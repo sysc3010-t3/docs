@@ -106,15 +106,44 @@
 	The body of the car will contain an Arduino and a Raspberry Pi. The Arduino
 	will control the movement of the car (steering, acceleration) and handle the
 	headlights of the car (photoresistor sensor and LEDs). The photoresistor
-	sensor will be used to detect when an area is dimly lit and the Arduino will
-	automatically turn on the headlights (LEDs). The car movement will require
-	motors to be connected to the Arduino and possibly a custom 3D printed
-	chassis to hold all of the components. The car will use continuous tracks
-	for propulsion as they will allow the car to traverse more types of terrain.
-	The Raspberry Pi will be connected to a Wi-Fi network to receive user
-	commands and relay them to the Arduino via a wired connection. The Raspberry
-	Pi will also be connected to the camera and will stream the video feed to
-	the centralized server.
+	sensor will be polled regularly to monitor the light intensity of an area
+	and the Arduino will automatically turn the headlights (LEDs) on or off
+	based on threshold. The car movement will require motors to be connected to
+	the Arduino and possibly a custom 3D printed chassis to hold all of the
+	components. The car will use continuous tracks for propulsion as they will
+	allow the car to traverse more types of terrain. The Raspberry Pi will be
+	connected to a Wi-Fi network to receive user commands and relay them to the
+	Arduino via a wired connection. The Raspberry Pi will also be connected to
+	the camera and will stream the video feed to the centralized server.\\
+
+	\begin{figure}[H]
+    	\centering
+		\includegraphics[width=\linewidth]{Proposal_Car_Movement_Sequence.png}
+    	\caption{Sequence diagram of the user moving the car}
+    	\label{fig:movement}
+	\end{figure}
+
+	Figure \ref{fig:movement} describes the process that takes place when
+	the user controls the movement of the car. The user will indicate the
+	direction and speed that the car should go through the Android application.
+	The app will then send the direction and speed wirelessly to the server
+	which will route the commands to the RC car registered to the user. The
+	Rasberry Pi on the car will receive the commands and relay them to the
+	Arduino via a direct serial connection. The Arduino will adjust the speeds
+	of the motors to reach the specified speed and direction.
+
+	\begin{figure}[H]
+    	\centering
+		\includegraphics[width=0.75\linewidth]{Proposal_Automatic_Headlights_Sequence.png}
+    	\caption{Sequence diagram of the automatic headlights}
+    	\label{fig:headlights}
+	\end{figure}
+
+	The process of the automatic headlights is shown in Figure
+	\ref{fig:headlights}. The Arduino will regularly read the analog output of
+	the photoresistor to determine the intensity of the light in the car's
+	environment. Based on the intensity compared to a certain threshold, the
+	Arduino will turn the headlights on or off.
 
 	\begin{figure}[H]
     	\centering
@@ -148,6 +177,10 @@
 	separate components are integrated together. Thus, beyond the unit testing
 	of individual components, integration testing will need to be done at every
 	stage of the system’s development.
+
+	Each member of the group will be working on all aspects of the project.
+	There will also be a shared leadership role and for every meeting, there
+	will be a recordkeeper that wil be rotated between each member.
 
 	\subsection*{Milestones}
 	\markright{}
