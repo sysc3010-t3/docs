@@ -101,7 +101,7 @@
 
     Users will use the Android app to register their car to themselves and
     connect it to a Wi-Fi network. After the car is connected to Wi-Fi,
-    users can control the cars movements via a game controller connected to
+    users can control the car's movements via a game controller connected to
     the phone via Bluetooth as well as stream a video feed from and control
     the mounted camera. The video feed is to allow the user to control the
     car when it is not in sight. The app will also allow users to control
@@ -115,18 +115,18 @@
     the server to be streamed by the proper user.
 
     The body of the car will contain an Arduino and a Raspberry Pi. The
-    Arduino will control the movement of the car (steering, acceleration)
-    and handle the headlights of the car (photoresistor sensor and LEDs).
-    The photoresistor sensors will be polled regularly to monitor the light
+    Arduino will control the movement of the car (steering, acceleration) and
+    handle the headlights of the car (photoresistor sensor and LEDs). The
+    photoresistor sensors will be polled regularly to monitor the light
     intensity of an area and the Arduino will automatically turn the
-    headlights (LEDs) on or off based on threshold. The car movement will
+    headlights (LEDs) on or off based on a threshold. The car movement will
     require motors to be connected to the Arduino and possibly a custom 3D
-    printed chassis to hold all of the components. The car will use
-    continuous tracks for propulsion as they will allow the car to traverse
-    more types of terrain. The Raspberry Pi will be connected to a Wi-Fi
-    network to receive user commands and relay them to the Arduino via a
-    wired connection. The Raspberry Pi will also be connected to the camera
-    and will stream the video feed to the centralized server.
+    printed chassis to hold all of the components. The car will use two rear
+    wheels for propulsion along with a third wheel in the front that will
+    balance the car. The Raspberry Pi will be connected to a Wi-Fi network to
+    receive user commands and relay them to the Arduino via a wired
+    connection. The Raspberry Pi will also be connected to the camera and
+    will stream the video feed to the centralized server.
 
     \begin{figure}[H]
         \centering
@@ -135,7 +135,7 @@
         \label{fig:deployment}
     \end{figure}
 
-    \subsection{Communication Protocols}
+    \subsection{Communication Protocols} \label{ssec:communication}
 
     The main use cases for the system are:
     \begin{itemize}
@@ -150,18 +150,18 @@
     \subsubsection{User Registration}
 
     During registration, the user will input into the Android app a name and
-    password for their new account. The app will then pass the information
-    to the server which will encrypt the password with a salt value and
-    store the information in the database. The SQL library provides the ID
-    of the last row modified, so the server will store the user ID locally
-    as long as it is connected to the app. The user will then be prompted by
-    the app to connect a car to a local Wi-Fi network. Once the car is
-    connected, the car will respond to the app to confirm the connection
-    with its name and IP address. The app will register the car with the
-    system and send the car’s name and IP address to the server to be stored
-    in the database along with the user’s ID. Once the server completes
-    inputting the data into the database, it will respond to the app to
-    confirm the registration.
+    password for their new account. The app will then pass the information to
+    the server which will hash the password with a salt value and store the
+    information in the database. The SQL library provides the ID of the last
+    row modified, so the server will store the user ID locally as long as it
+    is connected to the app. The user will then be prompted by the app to
+    connect a car to a local Wi-Fi network. Once the car is connected, the
+    car will respond to the app to confirm the connection with its name and
+    IP address. The app will register the car with the system and send the
+    car’s name and IP address to the server to be stored in the database
+    along with the user’s ID. Once the server completes inputting the data
+    into the database, it will respond to the app to confirm the
+    registration.
 
     Figure \ref{fig:registration} is a sequence diagram of the process and Table
     \ref{table:registration} describes the communication protocols.
@@ -219,7 +219,7 @@
     their name and password that they used to register their account. The
     app will send this information to the server to be validated. The server
     will get the user information for the given name from the database and
-    validate that the provided password matches the stored password. If does
+    validate that the provided password matches the stored password. If it does
     not match, the server will inform the app that the inputted information
     was invalid. If it does match, the server will get all the car
     information that is associated with the user account and send the app a
@@ -243,19 +243,20 @@
 
     To move the car, the user will move the joystick on the game controller
     that is connected to the Android phone via Bluetooth. When the Android
-    app receives the movement event, it will send the joystick position
-    directly to the car RPi. The car RPi will then send the positioning to
-    the car Arduino which will use that information to calculate the speed
-    of the motors. The car Arduino will set the speeds of the left and right
-    motors according to the results of the calculation.
+    app receives the movement event, it will send the joystick position to
+    the server RPi which will then forward the message to the car RPi. The
+    car RPi will then send the positioning to the car Arduino which will use
+    that information to calculate the speed of the motors. The car Arduino
+    will set the speeds of the left and right motors according to the results
+    of the calculation.
 
-    The server and car RPis will only pass the joystick position along if it is
-    different from the previous position. This will protect against repeated
-    packets so that the nodes are not overloaded by the increased number of
-    packets.
+    The server and car RPis will only pass the joystick position along if it
+    is different from the previous position. This will protect against
+    repeated packets so that the nodes are not overloaded by the increased
+    number of packets.
 
-    Figure \ref{fig:movement} is a sequence diagram of the movement process and
-    Table \ref{table:movement} describes the communication protocols.
+    Figure \ref{fig:movement} is a sequence diagram of the movement process
+    and Table \ref{table:movement} describes the communication protocols.
 
     \pagebreak
 
@@ -322,11 +323,11 @@
             android.view.MotionEvent\newline
             (contains x and y axis values of controller joystick)\\
         \hline
-        Android App & Car RPi & moveCar &
+        Android App & Server RPi & moveCar &
             \textbf{JSON object}\newline
             \{“x\_axis”: int, “y\_axis”: int\}\\
         \hline
-        Car RPi & Car Arduino & sendDirection &
+        Server RPi / Car RPi & Car RPi / Car Arduino & sendDirection &
             \textbf{JSON object}\newline
             \{“x\_axis”: int, “y\_axis”: int\}\\
         \hline
@@ -338,13 +339,16 @@
 
     \subsubsection{Video Streaming} \label{sssec:stream}
 
-    When the user selects a car to control, the Android app sends a request to
-    the server RPi to get the IP address and port of the car RPi. The app will
-    then access the video stream hosted on the car RPi. If the app is unable to
-    access the video stream, it will display an error page to the user with
-    suggestions on how to fix the issue.
+    When the user selects a car to control, the Android app will access that
+    car's video stream through an HTTP GET request. This request will be made
+    to the server RPi which will route the request to the car RPi. The car
+    RPi will respond with an HTML web page which the server RPi will then
+    route back to the Android app. If the app is unable to access the video
+    stream, it will display an error page to the user with suggestions on how
+    to fix the issue.
 
-    The sequence diagram of the process is shown in Figure \ref{fig:stream} and Table \ref{table:stream} describes the communication protocols.
+    The sequence diagram of the process is shown in Figure \ref{fig:stream} and
+    Table \ref{table:stream} describes the communication protocols.
 
     \begin{figure}[H]
         \centering
@@ -353,45 +357,39 @@
         \label{fig:stream}
     \end{figure}
 
-    \begin{tabularx}{\linewidth}
-        {|>{\hsize=.5\hsize}L|>{\hsize=.5\hsize}L|>{\hsize=.8\hsize}L|L|}
-    \caption{Communication protocols for video streaming}
-    \label{table:stream}\\
-        \hline
-        \centering\arraybackslash\textbf{Sender} &
-        \centering\arraybackslash\textbf{Receiver} &
-        \centering\arraybackslash\textbf{Message} &
-        \centering\arraybackslash\textbf{Format}\\
-        \hline
-        Android App & Server RPi & selectCar &
-            \textbf{JSON object}\newline
-            \{"car\_id": int\}\\
-        \hline
-        Server RPi & Android App & car &
-            \textbf{JSON object}\newline
-            \{"ipAddress": string, "port": int\}\\
-        \hline
-        Android App & Car RPi & getWebpage &
-            \textbf{HTTP Request}\newline
-            GET https://<ipAddress>:<port>/\\
-        \hline
-        Car RPi & Android App & webpage & HTML file\\
-        \hline
-        Car RPi & Android App & sendVideoStream & Video frame (bytes)\\
-        \hline
-    \end{tabularx}
+    \begin{figure}[H]
+        \begin{tabularx}{\linewidth}
+            {|>{\hsize=.5\hsize}L|>{\hsize=.5\hsize}L|>{\hsize=.6\hsize}L|L|}
+        \caption{Communication protocols for video streaming}
+        \label{table:stream}\\
+            \hline
+            \centering\arraybackslash\textbf{Sender} &
+            \centering\arraybackslash\textbf{Receiver} &
+            \centering\arraybackslash\textbf{Message} &
+            \centering\arraybackslash\textbf{Format}\\
+            \hline
+            Android App / Server RPi & Server RPi / Car Rpi & getWebpage &
+                \textbf{HTTP Request}\newline
+                GET https://\textless ipAddr\textgreater :\textless port\textgreater \\
+            \hline
+            Server RPi / Car RPi & Android App / Server RPi & webpage & HTML file\\
+            \hline
+            Car RPi & Android App & sendVideoStream & Video frame (bytes)\\
+            \hline
+        \end{tabularx}
+    \end{figure}
 
     \subsubsection{General Error Handling}
 
     In the case of an error occurring during the communication between nodes,
     there will be a timeout when packets are sent so if a response is not
     received within this time, the request will be retried. This is to handle
-    dropped packets. A node will also retry a packet if the response to request
-    is invalid.
+    dropped packets. A node will also retry a packet if the response to a
+    request is invalid.
 
     If the communication between nodes is broken, the app will display an error
     to the user with suggestions for fixing the issue, such as confirming
-    internet connection of Android phone or car.
+    internet connection of the Android phone or the car.
 
     \subsection{Database Schema}
 
@@ -405,11 +403,11 @@
     The database schema for the system is shown in Figure \ref{fig:database}.
     There will be two tables: users, and cars.
 
-    The “users” table will store the user information, which includes the user
-    ID, name, salt, and password. The ID will be the primary key of the table.
-    The stored password will be encrypted and the salt will be used to validate
-    login attempts. The name will be unique so each user must have a different
-    name.
+    The “users” table will store the user information, which includes the
+    user ID, name, salt, and password. The ID will be the primary key of the
+    table. The stored password will be hashed and the salt will be used to
+    validate login attempts. The name will be unique so each user must have a
+    different name.
 
     Car information will be stored in the “cars” table. The car information
     would be the ID, name, IP address, and associated user ID. The ID will be
@@ -424,12 +422,12 @@
 
     Figure \ref{fig:headlights} shows a flow chart describing the feedback loop
     of the light sensors and car headlights. The Arduino on the car polls the
-    photoresistors on the car for its environments brightness. If the
+    photoresistors on the car for its environment's brightness. If the
     environmental brightness is less than the defined brightness threshold
     constant, then the headlights are turned on. The headlights are turned off
     if the environmental brightness is greater than the threshold. This loop is
     repeated when the car is running. The LIGHTTHRESHOLD constant defines the
-    brightness level where the cars headlights need to be turned on for the car
+    brightness level where the car's headlights need to be turned on for the car
     to be operated safely.
 
     \subsubsection{Movement Control}
@@ -444,6 +442,22 @@
     application to the motors can be seen in Figure \ref{fig:movement}, also in
     section \ref{sssec:movement}.
 
+    The Android application takes input from a connected controller
+    \cite{controller}. The application responds to input events from the
+    controller and converts the input value(s) to x and y values that each
+    range from a negative MIN value to a positive MAX value, with 0 being
+    stationary. For example, if the input is from an analog joy-stick, then
+    the set of possible input values for the joystick position is continuous,
+    so the input values for x and y could get converted to any value between
+    MIN and MAX. On the other hand, if the input is from a D-pad, then the
+    set of possible input values is discrete (i.e, a directional input is
+    either on or off at any given moment), so our Android application
+    translates these on or off values to the appropriate value of MAX, MIN,
+    or 0 for the x and y directions. The application then sends the converted
+    x and y values in a JSON object. The Android application sends a new JSON
+    instruction whenever the controller sends an input event from the analog
+    joy-stick or D-pad.
+
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.6\linewidth]{diagrams/Headlights_Flowchart.png}
@@ -451,23 +465,6 @@
         \label{fig:headlights}
     \end{figure}
 
-    \textbf{Android Side}\\ [0.5em]
-    The Android application takes input from a connected controller. The
-    application responds to input events from the controller and converts the
-    input value(s) to x and y values that each range from a negative MIN value
-    to a positive MAX value, with 0 being stationary. For example, if the input
-    is from an analog joy-stick, then the set of possible input values for the
-    joystick position is continuous, so the input values for x and y could get
-    converted to any value between MIN and MAX. On the other hand, if the input
-    is from a D-pad, then the set of possible input values is discrete (i.e, a
-    directional input is either on or off at any given moment), so our Android
-    application translates these on or off values to the appropriate value of
-    MAX, MIN, or 0 for the x and y directions. The application then sends the
-    converted x and y values in a JSON object. The Android application sends a
-    new JSON instruction whenever the controller sends an input event from the
-    analog joy-stick or D-pad.
-
-    \textbf{Car Side}\\ [0.5em]
     In order for the car to be able to go in a given direction with a given
     speed, the motors for each of the two wheels need to be spun either
     clockwise or counterclockwise at a certain rate. The JSON objects sent
@@ -481,29 +478,60 @@
 
     \subsubsection{Video Streaming}
 
-    The video stream recorded by the mounted Raspberry Pi camera will be served
-    by an HTTP web server running on the mounted Raspberry Pi. The web page
-    served by the HTTP server will allow for any web browser on any machine on
-    the same network as the car’s Raspberry Pi to access the stream from the
-    camera. The stream itself will be a Motion JPEG (mjpg) file that is embedded
-    in the HTML web page. The Android application will use a WebView
-    \cite{webbased} to display this web page in the app, so that user’s can see
-    the video stream. This design is based on the Web streaming example
+    The video stream recorded by the mounted Raspberry Pi camera will be
+    served by an HTTP web server running on the car RPi. The web page served
+    by the HTTP server will allow for any web browser on any machine on the
+    same network as the car RPi to access the stream from the camera. The
+    stream itself will be a Motion JPEG (mjpg) file that is embedded in the
+    HTML web page. The web server will be based on the Web streaming example
     \cite{advancedrecipes} in the picamera Python package documentation. The
-    flow of messages between nodes is illustrated in Figure \ref{fig:stream} in
-    section \ref{sssec:stream}.
+    Android application will use a WebView \cite{webbased} to display this
+    web page in the app, so that user’s can see the video stream. Instead of
+    requiring the Android app to access the video stream web page directly
+    through the car RPi's IP address, a reverse proxy will be set up on the
+    server RPi that will receive HTTP requests from the Android app and
+    return the web page on behalf of the car's web server. This will simplify
+    the implementation of the Android app because it only needs to know the
+    server RPi's static IP address and doesn't need to worry about different
+    IP addresses for different cars. The flow of messages between nodes is
+    illustrated in Figure \ref{fig:stream} in section \ref{sssec:stream}.
 
-    \subsubsection{User \& Car Management}
+    \subsubsection{Server Management}
 
-    The server runs three functions with regard to user and car management. The
-    User Registration protocol takes registration input from the android
-    application and creates a user profile to be stored in the database. This is
-    followed by the Car Registration function. This function involves first
-    connecting the android application to the car. Then server registers the car
-    in the database and associates the car with a user. The User Login function
-    is called when a user connects to the android application. The user requests
-    access from the server, which the server validates. The server responds with
-    access to the car.
+    The server Raspberry Pi acts as a middle-man for this system. The server
+    facilitates all communication between the Android application, the cars,
+    and the database. Figure \ref{fig:vpn} below shows the network relationship between
+    these components in the system and the presence of the VPN. This figure
+    shows that the server, database, and multiple cars are within the VPN.
+
+    Once deployed, the cars are expected to be connected to different
+    networks than the device running the Android application. This VPN allows
+    for a connection between the application and the distributed cars,
+    through the middle-man server. This VPN is required in order to avoid
+    having the cars be publicly available over the internet. Having the
+    cars publicly accessible could create a security risk with the video
+    livestream available to watchers who have accessed the port. The VPN can
+    be seen in figure 8 above as the grey cloud element surrounding the cars,
+    server, and database. The device running the Android application is not
+    within the VPN cloud.
+
+    The server Raspberry Pi acts as a middle-man between the system
+    components. This involves facilitating routines between the cars and
+    applications, and the application and database. These routines have been
+    described in section \ref{ssec:communication} above including the User
+    Registration protocol, the Car Registration protocol and the User Login
+    protocol. The server is used as an intermediate in sending movement
+    control and video streaming between the cars and the android application.
+    In these software protocols, all information sent is passed through the
+    server.
+
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{diagrams/VPN.png}
+        \caption{Diagram showing the VPN used in the system}
+        \label{fig:vpn}
+    \end{figure}
 
     \subsection{Hardware}
 
@@ -512,12 +540,12 @@
     The overall design of the remote car is shown in Figure \ref{fig:hardware}
     with the components laid out from a birds eye view. Starting in the top
     left of the image with the breadboard, there are two yellow LEDs followed by
-    resistors. Which are connected to digital outputs from the Arduino.
+    resistors, which are connected to digital outputs from the Arduino.
     Additionally there are three photoresistors each associated with their own
     resistor. These photoresistors are connected to the analog inputs on the
-    Arduino. Two motors are used for controlling the direction of the vehicle,
-    are shown in the middle slightly to the right which are connected to a motor
-    driver. The Arduino is in series with the motor driver, that will send
+    Arduino. Two motors are used for controlling the direction of the vehicle.
+    They are shown in the middle slightly to the right and are connected to a
+    motor driver. The Arduino is in series with the motor driver, that will send
     digital signals to the motor driver. The driver will then decode these
     signals to state the direction of rotation for the motors. On the right side
     of the figure is the power cell used for the car, which will be four AAA
@@ -528,7 +556,7 @@
     \begin{itemize}
         \item Blue, Green, Pink, Yellow - Signals being sent to Driver Motor
         \item Cyan - Connection for Photoresistor 2
-        \item Dark Brown, Dark Purple- Supplementary power being sent to Driver Motor
+        \item Dark Brown, Dark Purple - Supplementary power being sent to Driver Motor
         \item Grey - Connection for LED 1
         \item Light Brown - Connection for Photoresistor 3
         \item Orange - Connection for LED 2 and Photoresistor 1
@@ -574,7 +602,7 @@
                 \item Turn LED off
             \end{enumerate}
     \end{enumerate}
-    
+
     \subsubsection{Motors}
 
     During the testing sequence of the motor it will ensure that rotation for
@@ -594,16 +622,18 @@
 
     This test is completed after the phone has established a connection with the
     car, so that the user will have access to see if the video streaming from
-    the car it in working order.
+    the car is in working order.
 
-    \textbf{Procedure:}
-    \begin{enumerate}
-        \item Power camera on
-        \item Initiate a recording
-        \item Wait 3 seconds
-        \item Stop the recording
-        \item Turn off camera
-    \end{enumerate}
+    \begin{figure}
+        \textbf{Procedure:}
+        \begin{enumerate}
+            \item Power camera on
+            \item Initiate a recording
+            \item Wait 3 seconds
+            \item Stop the recording
+            \item Turn off camera
+        \end{enumerate}
+    \end{figure}
 
     \subsubsection{Photoresistors}
 
@@ -627,13 +657,17 @@
     a value of 1023 which is also the maximum value.
 
     \begin{thebibliography}{9}
-        \bibitem{webbased}
-        “Web-based content,” Android developers. [Online]. Available:
-        \\\url{https://developer.android.com/guide/webapps}
+        \bibitem{controller}
+        “Handle controller actions,” Android developers. [Online]. Available:
+        \\\url{https://developer.android.com/training/game-controllers/controller-input}
 
         \bibitem{advancedrecipes}
         D. Jones, “4. Advanced Recipes,” Picamera. [Online]. Available:
         \\\url{https://picamera.readthedocs.io/en/latest/recipes2.html#web-streaming}
+
+        \bibitem{webbased}
+        “Web-based content,” Android developers. [Online]. Available:
+        \\\url{https://developer.android.com/guide/webapps}
     \end{thebibliography}
 
 \end{document}
